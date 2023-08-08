@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      >
+    <head th:replace="layout/plantilla :: head">
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <nav th:replace="layout/plantilla :: header"></nav>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 p-0 m-0">
+                    <div class="container-fluid" style="min-height: 100vh;">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom px-4">
+                            <h1 class="h2">Listado de Registros</h1>
+                        </div>
+
+                        <div class="col-1">
+                            <div class="form-inline" style="width: 800px">
+                                <form class="form-inline ml-5" th:action="@{/registros}">
+                                    <div class="form-group mb-2">
+                                        <label>Filtrar:</label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3 mb-2">
+                                        <input type="text" id="param" name="param" class="form-control"
+                                               placeholder="Digite el valor a filtrar" />
+
+
+                                    </div>
+
+                                    <input type="submit" class=" btn btn-danger mb-2" th:value="#{cliente.filtro}"> &nbsp
+                                        <a th:href="@{/registros}" class="btn btn-secondary mb-2" th:text="#{cliente.limpiar}">
+                                            Inicio </a>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div sec:authorize="hasRole('ROLE_CLIENTE')">
+
+                            <div th:if="${hayRegistroEnProceso}" class="row d-flex align-items-center" style="margin-top: 15px">
+                                <div class="col-md-3">
+                                    <section th:replace="registros/botonFinalizarRutina :: botonFinalizarRutina"></section>
+                                </div>
+
+                            </div>
+
+                            <div th:if="${not hayRegistroEnProceso}" style="margin-top: 15px">
+                                <section th:replace="registros/botonIniciarRutina :: botonIniciarRutina"></section>
+                            </div>
+
+                        </div>
+
+                        <div class="table-responsive px-4" >
+                            <div th:if="${registros != null   and   !registros.empty }"> 
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Código Rutina</th>
+                                            <th sec:authorize="hasRole('ROLE_ADMIN')">Cod Cliente</th>
+                                            <th sec:authorize="hasRole('ROLE_ADMIN')">Nombre Cliente</th>
+                                            <th>Nombre Entrenador</th>
+                                            <th>Nombre Rutina</th>
+                                            <th>Hora Entrada</th>
+                                            <th>Hora Salida</th>
+                                            <th>Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="registro : ${registros}" th:if="${#authorization.expression('hasRole(''ROLE_CLIENTE'')') ? registro.ide_Cli == user_ide_cli : true}">
+                                            <td th:text="${registro.cod_Rutina}"></td>
+                                            <td th:text="${registro.ide_Cli}" sec:authorize="hasRole('ROLE_ADMIN')"></td>
+                                            <td th:text="${registro.nom_Cli + ' ' + registro.ape_Pat}" sec:authorize="hasRole('ROLE_ADMIN')"></td>
+                                            <td th:text="${registro.nom_Entrenador + ' ' + registro.ape_Pat_Entrenador}"></td>
+                                            <td th:text="${registro.nom_Rutina}"></td>
+                                            <td th:text="${registro.hora_Entrada}"></td>
+                                            <td th:text="${registro.hora_Salida == null ? 'En proceso' : registro.hora_Salida}"></td>
+                                            <td th:text="${#temporals.format(registro.fecha, 'dd/MM/yyyy')}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Empty List -->
+                        <div th:if="${registros == null  or registros.empty }"  style="height: 50vh; display: flex; align-items: center; justify-content: center;">
+                            <div  class="text-center" style="display: inline-block;">
+                                <p> [[#{registros.lista-vacia}]] </p>
+                            </div>   
+                        </div>
+
+                    </div>
+                    <footer th:replace="layout/plantilla :: footer"></footer> 
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

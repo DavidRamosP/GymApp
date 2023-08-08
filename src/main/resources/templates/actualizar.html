@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head th:replace="layout/plantilla :: head">
+        <title>Inicio</title>
+        <meta charset="UTF-8" />
+    </head>
+
+    <body>
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar-->
+                <nav th:replace="layout/plantilla :: header"></nav>
+                <!-- Main Content -->
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 p-0 m-0">
+                    <!-- Main Section -->
+                    <div class="container-fluid" style="min-height: 100vh;">
+                        <!-- Formulario -->
+                        <section>
+                            <div class="container  my-3 text-white">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <a th:href="@{/clientes}" class="btn btn-warning float-left">
+                                            <i class="fas fa-arrow-left"> </i>
+                                            [[#{accion.regresar}]]
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <br />
+                        <section id="login">
+                            <div class="container mb-3">
+                                <div class="row">
+                                    <div class="col-md-6  mx-auto ">
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <form th:action="@{/guardar/{clienteId}(clienteId=${cliente.ideCli})}" method="post" th:object="${cliente}">
+                                                    <!--                                    <input type="hidden" name="ideCli" th:field="*{ideCli}"  />
+                                                                                            <br/>-->
+
+                                                    <div class="form-group">
+                                                        <label for="nomCli" class="form-control-label">[[#{cliente.nombre}]]:</label>
+                                                        <input type="text" name="nomCli" id="nomCli" class="form-control"
+                                                               th:field="*{nomCli}" required="required" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="apePat" class="form-control-label">[[#{cliente.ape-pat}]]:</label>
+                                                        <input type="text" name="apePat" id="apePat" class="form-control"
+                                                               th:field="*{apePat}" required="required" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="apeMat" class="form-control-label">[[#{cliente.ape-mat}]]:</label>
+                                                        <input type="text" name="apeMat" id="apeMat" class="form-control"
+                                                               th:field="*{apeMat}" required="required" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="dniCli" class="form-control-label">[[#{cliente.dni}]]:</label>
+                                                        <input type="text" name="dniCli" id="dniCli" class="form-control"
+                                                               th:field="*{dniCli}" required="required" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="dirCli" class="form-control-label">[[#{cliente.direccion}]]:</label>
+                                                        <input type="text" name="dirCli" id="dirCli" class="form-control"
+                                                               th:field="*{dirCli}" required="required" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ideDis" class="form-control-label" >[[#{cliente.distrito}]]:</label>
+                                                        <select class="form-control" id="ideDis" name="ideDis" th:field="*{ideDis}" required="required" >
+                                                            <option value="">--Seleccione--</option>
+                                                            <option th:each="distrito : ${distritos}" th:value="${distrito.ide_dis}" th:text="${distrito.nom_dis}">Distrito 1</option>
+                                                        </select>
+                                                    </div>    
+<!--                                                    <div class="form-group">
+                                                        <label for="ideDis" class="form-control-label">[[#{cliente.distrito}]]:</label>
+                                                        <input type="text" name="ideDis" id="ideDis" class="form-control"
+                                                               th:field="*{ideDis}" required="required" />
+                                                    </div>-->
+
+                                                    <div class="form-group">
+                                                        <label for="telCli" class="form-control-label">[[#{cliente.telefono}]]:</label>
+                                                        <input type="text" name="telCli" id="telCli" class="form-control"
+                                                               th:field="*{telCli}" required="required" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="emaCli" class="form-control-label">[[#{cliente.email}]]:</label>
+                                                        <input type="text" name="emaCli" id="emaCli" class="form-control"
+                                                               th:field="*{emaCli}" required="required" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="fechaNac"
+                                                               class="form-control-label">[[#{cliente.fecha-nacimiento}]]:</label>
+                                                        <input type="text" name="fechaNac" id="fechaNac" class="form-control"
+                                                               th:field="*{fechaNac}" required="required" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="sexo" class="form-control-label">[[#{cliente.sexo}]]:</label>
+                                                        <input type="text" name="sexo" id="sexo" class="form-control" th:field="*{sexo}"
+                                                               required="required" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="rolCli" class="form-control-label">[[#{cliente.rol}]]:</label>
+                                                        <input type="text" name="rolCli" id="rolCli" class="form-control"
+                                                               th:field="*{rolCli}" required="required" />
+                                                    </div>
+                                                    <div class="col-lg-12 ">
+                                                        <input type="submit" name="guardar" class="btn btn-warning btn-block"
+                                                               th:value="#{accion.guardar}" />
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- Sección de mensajes -->
+                        <div th:if="${mensaje}" id="mensaje" class="alert alert-success" role="alert">
+                            <p th:text="${mensaje}"></p>
+                        </div>
+                        <div th:if="${error}" id="error" class="alert alert-danger" role="alert">
+                            <p th:text="${error}"></p>
+                        </div>
+                    </div>
+                    <!-- Footer -->
+                    <footer th:replace="layout/plantilla :: footer"></footer>
+                </main>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script>
+            // Declaracion de variables
+            var mensaje = document.getElementById("mensaje");
+            var error = document.getElementById("error");
+
+            // Función para redirigir a la página principal después de 3 segundos
+            function redirigir() {
+                setTimeout(function () {
+                    window.location.href = "/clientes";
+                }, 3000);
+            }
+
+            // Llama la función de redirección cuando se muestra el mensaje de exito
+            if (mensaje != null && error == null) {
+                redirigir();
+            }
+        </script>
+    </body>
+
+</html>

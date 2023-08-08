@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head th:replace="layout/plantilla :: head">
+        <title>Inicio</title>
+        <meta charset="UTF-8" />
+    </head>
+
+    <body>
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar-->
+                <nav th:replace="layout/plantilla :: header"></nav>
+                <!-- Main Content -->
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 p-0 m-0">
+                    <!-- Main Section -->
+                    <div class="container-fluid" style="min-height: 100vh;">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom px-4">
+                            <h1 class="h2">[[#{barra.clientes}]]</h1>
+                        </div>
+
+                        <!-- Filter  -->
+                        <div class="row justify-content-between" style="margin-top: 15px">
+                            <div class="col-3">
+                                <div class="form-inline" style="width: 800px">
+                                    <form class="form-inline ml-5" th:action="@{/clientes}">
+                                        <div class="form-group mb-2">
+                                            <label>Filtrar:</label>
+                                        </div>
+
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input type="text" id="palabra" name="palabra" class="form-control"
+                                                   th:value="${palabra}" placeholder="Digite el valor a filtrar" />
+                                        </div>
+
+                                        <input type="submit" class=" btn btn-warning mb-2" th:value="#{cliente.filtro}"> &nbsp
+                                            <a th:href="@{/clientes}" class="btn btn-secondary mb-2" th:text="#{cliente.limpiar}">
+                                                Inicio </a>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <section th:replace="layout/botonesAgregar :: a">
+                                </section>
+                            </div>
+                        </div>
+
+                        <!-- Table  -->
+                        <div class="table-responsive px-4">
+                            <div th:if="${clientes != null   and   !clientes.empty }">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>[[#{cliente.id}]]</th>
+                                            <th>[[#{cliente.nombre}]]</th>
+                                            <th>[[#{cliente.ape-pat}]]</th>
+                                            <th>[[#{cliente.ape-mat}]]</th>
+                                            <th>[[#{cliente.dni}]]</th>
+                                            <th>[[#{cliente.direccion}]]</th>
+                                            <th>[[#{cliente.distrito}]]</th>
+                                            <th>[[#{cliente.telefono}]]</th>
+                                            <th>[[#{cliente.email}]]</th>
+                                            <th>[[#{cliente.fecha-nacimiento}]]</th>
+                                            <th>[[#{cliente.sexo}]]</th>
+                                            <th>[[#{cliente.rol}]]</th>
+                                            <th sec:authorize="hasRole('ROLE_ADMIN')">[[#{accion.editar}]] </th>
+                                            <th sec:authorize="hasRole('ROLE_ADMIN')">[[#{accion.eliminar}]] </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="cliente:${clientes}">
+                                            <td th:text="${cliente.ideCli}">Mostrar Id</td>
+                                            <td th:text="${cliente.nomCli}">Mostrar Nombre Completo</td>
+                                            <td th:text="${cliente.apePat}">Mostrar Apellido Paterno</td>
+                                            <td th:text="${cliente.apeMat}">Mostrar Apellido Materno</td>
+                                            <td th:text="${cliente.dniCli}">Mostrar DNI</td>
+                                            <td th:text="${cliente.dirCli}">Mostrar Direccion</td>
+                                            <td th:text="${cliente.ideDis}">Mostrar Distrito</td>
+                                            <td th:text="${cliente.telCli}">Mostrar Telefono</td>
+                                            <td th:text="${cliente.emaCli}">Mostrar Email</td>
+                                            <td th:text="${#temporals.format(cliente.fechaNac, 'dd/MM/yyyy')}">Mostrar Fecha de
+                                                nacimiento</td>
+                                            <td th:text="${cliente.sexo}">Mostrar sexo Nac</td>
+                                            <td th:text="${cliente.rolCli}">Mostrar rolCli</td>
+                                            <td sec:authorize="hasRole('ROLE_ADMIN')" style="text-align: center;">
+                                                <a th:href="@{/editar/} + ${cliente.ideCli}">
+                                                    <i class="fas fa-pencil" style="color: #FEAF00;"></i>
+                                                </a>
+                                            </td>
+                                            <td sec:authorize="hasRole('ROLE_ADMIN')" style="text-align: center;">
+                                                <a href="#" class="eliminar-cliente" data-id="${cliente.ideCli}"
+                                                   th:attr="data-url=@{/eliminar/{clienteId}(clienteId=${cliente.ideCli})}">
+                                                    <i class="fas fa-trash" style="color: #FEAF00;"></i>
+                                                </a>
+                                            </td>
+                                            <!--  Modal de confirmación de eliminación -->
+                                            <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog"
+                                                 aria-labelledby="confirm-modal-label" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="confirm-modal-label">Confirmar
+                                                                eliminación</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Cerrar">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>¿Está seguro de que desea eliminar este cliente?</p>
+                                                            <p>Este cambio no se puede deshacer.</p>
+                                                            <input type="hidden" name="clienteId">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Cancelar</button>
+                                                            <a href="#" class="btn btn-danger"
+                                                               id="eliminar-cliente">Eliminar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                         <!-- Empty List -->
+                        <div th:if="${clientes == null  or clientes.empty }"  style="height: 50vh; display: flex; align-items: center; justify-content: center;">
+                            <div  class="text-center" style="display: inline-block;">
+                                <p> [[#{cliente.lista-vacia}]] </p>
+                            </div>   
+                        </div>
+                        
+                    </div>
+
+                    <!-- Footer -->
+                    <footer th:replace="layout/plantilla :: footer"></footer>
+                </main>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                // Evento click del icono eliminar
+                $('.eliminar-cliente').on('click', function (e) {
+                    e.preventDefault();
+                    var clienteId = $(this).data('id');
+                    console.log(clienteId);
+                    $('#confirm-modal input[name="clienteId"]').val(clienteId);
+                    var url = $(this).data('url');
+                    $('#eliminar-cliente').attr('href', url);
+                    $('#confirm-modal').modal('show');
+                });
+
+                // Evento click del botón eliminar del modal
+                $('#eliminar-cliente').on('click', function (e) {
+                    var clienteId = $('#confirm-modal input[name="clienteId"]').val();
+                    window.location.href = "/eliminar/" + clienteId;
+                });
+            });
+        </script>
+    </body>
+
+</html>

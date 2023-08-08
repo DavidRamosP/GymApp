@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      >
+    <head>
+        <title>Botones Agregar</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>     
+        <section  th:fragment="botonesAgregar"                      >
+            <div  class="container text-white" >
+                <div class="row">
+                    <div sec:authorize="hasRole('ROLE_ADMIN')"   >
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/agregar}" class="btn btn-info float-left" style="background-color: #FEAF00; border: none; font-weight: bold"> 
+                           <i class="fas fa-plus" > </i> 
+                            [[#{cliente.nuevo}]]   
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>  
+    </body>
+</html>

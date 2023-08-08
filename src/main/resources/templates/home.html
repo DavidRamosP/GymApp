@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head th:replace="layout/plantilla :: head">
+        <title>Inicio</title>
+        <meta charset="UTF-8" />
+    </head>
+
+    <body>
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar-->
+                <nav th:replace="layout/plantilla :: header"></nav>
+                <!-- Main Content -->
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 p-0 m-0">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom px-4 ">
+                        <h1 class="h2">[[#{barra.inicio}]]</h1>
+                    </div>
+
+                    <div class="container-fluid" style="min-height: 100vh;">
+                        <h5 class="text-muted">[[#{barra.bienvenido}]]</h5>
+                        <div class="row">
+                            <div sec:authorize="hasRole('ROLE_ADMIN')" class="col-sm-4" style="background-color: #F0F9FF; padding: 20px; margin: 10px;">
+                                <i class="fas fa-users" style="font-size: 40px; margin-right: 10px; color: #74C1ED"></i>
+                                <div class="d-flex align-items-center">
+                                    <h5 class="mt-2">[[#{barra.clientes}]]</h5>
+                                </div>
+                                <h2 class="text-right font-weight-bold" th:text="${countClientes}"></h2>
+                            </div>
+                            <div sec:authorize="hasRole('ROLE_ADMIN')" class="col-sm-4" style="background-color: #FEFBEC; padding: 20px; margin: 10px;">
+                                <i class="fas fa-check-circle" style="font-size: 40px; margin-right: 10px;  color: #F6C762"></i>
+                                <div class="d-flex align-items-center">
+                                    <h5 class="mt-2" >[[#{cliente-workout}]] </h5>
+                                </div>
+                                <h2 class="text-right font-weight-bold" th:text="${countUsersActivos}">120</h2>
+                            </div>
+                            <div sec:authorize="hasRole('ROLE_CLIENTE')" class="col-sm-4" style="background-color: #FEF6FB; padding: 20px; margin: 10px;">
+                                <i class="fas fa-check-circle" style="font-size: 40px; margin-right: 10px;  color: #EE95C5"></i>
+                                <div class="d-flex align-items-center">
+                                    <h5 class="mt-2" >Horas totales entrenadas</h5>
+                                </div>
+                                <h2 class="text-right font-weight-bold" th:text="${horasTotales}">120</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center m-auto">
+                            <img th:src="@{/workout.jpg}" class="img-fluid" alt="workout" height="400" width="400">
+                        </div>
+                    <!-- Footer -->
+                    <footer th:replace="layout/plantilla :: footer"></footer>
+                </main>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    </body>
+</html>

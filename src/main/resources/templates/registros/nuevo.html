@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th"http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec"http://www.thymeleaf.org/extras/spring-security"
+      >
+    <head th:replace="layout/plantilla :: head">
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <nav th:replace="layout/plantilla :: header"></nav>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 p-0 m-0">
+                    <div class="container-fluid" style="min-height: 100vh;">
+                        <div class="container" style="display: flex; justify-content: center; align-items: center; height: 100vh; width: 100%;">
+                            <div class="form-container" style="background-color: #fef2bf; padding: 30px; border-radius: 10px; width: 50%;">
+                                <form th:action="@{/registros/nuevo}" th:object="${registro}" method="POST" class="was-validated">
+                                    <div class="form-group">
+                                        <label for="rutina" th:text="#{registro.seleccionar-rutina}">Rutina</label>
+                                        <select class="form-control" name="rutina" th:field="*{cod_rutina}" style="border: none; border-radius: 5px; height: 35px; width: 100%; background-color: white; padding: 5px; box-shadow: 2px 2px 2px #FF8000; appearance: none;">
+                                            <option th:each="rutina : ${rutinas}" th:value="${rutina.cod_rutina}" th:text="${rutina.nom_rutina}">Rutina 1</option>
+                                        </select>
+                                    </div>
+                                    <button onclick="iniciarRutina()" class="btn btn-primary btn-block" type="submit" th:text="#{accion.iniciar}" name="nuevo" th:value="#{accion.guardar}" style="background-color: #FEAF00; border: none; font-weight: bold">
+                                        Iniciar
+                                    </button>
+                                </form>   
+                            </div>
+                        </div>
+                    </div>     
+                    <footer th:replace="layout/plantilla :: footer"></footer>
+                </main>
+            </div>
+        </div>
+        <script>
+  function iniciarRutina() {
+    alert("Rutina iniciada");
+  }
+        </script>
+
+</body>
+</html>

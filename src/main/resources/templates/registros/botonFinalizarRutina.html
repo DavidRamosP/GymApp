@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th"http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec"http://www.thymeleaf.org/extras/spring-security"
+      >
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <section th:fragment="botonFinalizarRutina" class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div >
+                    <div >                     
+                        <a th:href="@{/registros/editar}" class="btn btn-primary btn-block" style="background-color: #FEAF00; border: none; font-weight: bold">                          
+                            Finalizar Rutina
+                        </a>    
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

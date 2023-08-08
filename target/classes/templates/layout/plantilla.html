@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head th:fragment="head">
+        <title>Plantilla</title>
+        <meta charset="UTF-8" />
+        <!-- Agregar estos archivos al encabezado de la página -->
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+        <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}" />
+        <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+            <!--<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>-->
+            <script th:src="@{/webjars/jquery/3.4.0/jquery.min.js}"></script>
+            <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+            <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+            <style type="text/css">
+                /* estilo del elemento activo */
+                li.active {
+                    background-color: darkorange;
+                    color: white;
+                }
+
+                /* estilo del elemento al pasar el mouse sobre él */
+                li:hover {
+                    background-color: #FEAF00;
+                }
+
+                /* estilo de los demás elementos */
+                li {
+                    cursor: pointer;
+                }
+            </style>
+    </head>
+
+    <body>
+        <nav th:fragment="header" class="col-md-2 d-none d-md-block sidebar"
+             style="background-color: #F2EAE1; min-height: 100vh;">
+            <div class="sidebar-sticky">
+                <!--  Logo-->
+                <div class="logo">
+                    <a th:href="@{/clientes}" class="navbar-brand">
+                        <img th:src="@{/logo_sidebar.png}" class="img-fluid" alt="Logo">
+                    </a>
+                </div>
+                <!--  User-->
+                <div class="text-center" style="margin-top:60px; margin-bottom:60px; ">
+                    <img th:src="@{/avatar.png}" alt="Avatar" class="rounded-circle" width="80" height="80">
+                        <div class="mt-2" sec:authorize="isAuthenticated()"
+                             style="text-align: center; padding: 15px; font-weight: bold">
+                            <span sec:authentication="name"> Usuario</span>
+                            <!--                            <p class="text-muted">Rol del Usuario</p>-->
+                        </div>
+                </div>
+                <!--  Menu -->
+                <ul class="nav flex-column mb-2 mt-4">
+                    <li class="nav-item mb-2"
+                        onclick="this.style.backgroundColor = 'darkorange'; this.style.color = 'white'; document.getElementById('container').style.backgroundColor = 'darkorange'; document.getElementById('container').style.color = 'white';">
+                        <a class="nav-link active" th:href="@{/}"
+                           style="list-style-type: none; color: black; text-decoration: none;">
+                            <i class="fas fa-home mr-2"></i> [[#{barra.inicio}]]
+                        </a>
+                    </li>
+                    <!--                    <li class="nav-item mb-2">
+                                                <a class="nav-link" th:href="@{/registros}" style="list-style-type: none; color: black; text-decoration: none;">
+                                                    <i class="fas fa-dumbbell mr-2"></i> Rutinas
+                                                </a>
+                                            </li>-->
+                    <li  sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item mb-2">
+                        <a class="nav-link unstyled" th:href="@{/clientes}"
+                           style="list-style-type: none; color: black; text-decoration: none;">
+                            <i class="fas fa-users mr-2"></i> [[#{barra.clientes}]]
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link" th:href="@{/registros}"
+                           style="list-style-type: none; color: black; text-decoration: none;">
+                            <i class="fas fa-check-circle mr-2"></i> [[#{barra.asistencias}]]
+                        </a>
+                    </li>
+                    <!--                    <li class="nav-item mb-2">
+                                                <a class="nav-link" href="#" style="list-style-type: none; color: black; text-decoration: none;">
+                                                    <i class="fas fa-user-tie mr-2"></i> Entrenadores
+                                                </a>
+                                            </li>-->
+
+                    <!-- Cerrar sesión -->
+                    <li class="nav-item mb-2" style="margin-top:60px;">
+                        <form method="POST" th:action="@{/logout}">
+                            <a href="#" onclick="this.parentNode.submit();" class="nav-link"
+                               style="color: black; text-decoration: none">
+                                [[#{barra.salir}]] <i class="fas fa-sign-out"></i>
+                            </a>
+                        </form>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+        <footer th:fragment="footer" class="footer bg-black py-0" style=" background-color: #FEAF00;">
+            <div class="container text-center" style="padding: 30px 30px;">
+                <a style="text-decoration: none; color: white" th:href="@{/(lang=es)}">ES |</a>
+                <a style="text-decoration: none; color: white" th:href="@{/(lang=en)}">EN |</a>
+                <span style="color: white">[[#{plantilla.pie-pagina}]] &copy;
+                    <a style="text-decoration: none; color: white" href="https://www.cibertec.edu.pe"
+                       target="_blank">Cibertec</a> </span>
+            </div>
+        </footer>
+    </body>
+
+</html>
